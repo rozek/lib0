@@ -58,7 +58,7 @@ export const equalityStrict = (a, b) => a === b
  * @param {Array<T>|object} b
  * @return {boolean}
  */
-export const equalityFlat = (a, b) => a === b || (a != null && b != null && a.constructor === b.constructor && ((a instanceof Array && array.equalFlat(a, /** @type {Array<T>} */ (b))) || (typeof a === 'object' && object.equalFlat(a, b))))
+export const equalityFlat = (a, b) => a === b || (a != null && b != null && a.constructor === b.constructor && ((array.isArray(a) && array.equalFlat(a, /** @type {Array<T>} */ (b))) || (typeof a === 'object' && object.equalFlat(a, b))))
 
 /* c8 ignore start */
 
@@ -151,3 +151,36 @@ export const equalityDeep = (a, b) => {
 // @ts-ignore
 export const isOneOf = (value, options) => options.includes(value)
 /* c8 ignore stop */
+
+export const isArray = array.isArray
+
+/**
+ * @param {any} s
+ * @return {s is String}
+ */
+export const isString = (s) => s && s.constructor === String
+
+/**
+ * @param {any} n
+ * @return {n is Number}
+ */
+export const isNumber = n => n != null && n.constructor === Number
+
+/**
+ * @template TYPE
+ * @param {any} n
+ * @param {TYPE} T
+ * @return {n is InstanceType<TYPE>}
+ */
+export const is = (n, T) => n && n.constructor === T
+
+/**
+ * @template TYPE
+ * @param {TYPE} T
+ */
+export const isTemplate = (T) =>
+  /**
+   * @param {any} n
+   * @return {n is InstanceType<TYPE>}
+   **/
+  n => n && n.constructor === T

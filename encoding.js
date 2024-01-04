@@ -26,7 +26,6 @@
  * @module encoding
  */
 
-import * as buffer from './buffer.js'
 import * as math from './math.js'
 import * as number from './number.js'
 import * as binary from './binary.js'
@@ -101,7 +100,7 @@ export const toUint8Array = encoder => {
     uint8arr.set(d, curPos)
     curPos += d.length
   }
-  uint8arr.set(buffer.createUint8ArrayViewFromArrayBuffer(encoder.cbuf.buffer, 0, encoder.cpos), curPos)
+  uint8arr.set(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos), curPos)
   return uint8arr
 }
 
@@ -115,7 +114,7 @@ export const toUint8Array = encoder => {
 export const verifyLen = (encoder, len) => {
   const bufferLen = encoder.cbuf.length
   if (bufferLen - encoder.cpos < len) {
-    encoder.bufs.push(buffer.createUint8ArrayViewFromArrayBuffer(encoder.cbuf.buffer, 0, encoder.cpos))
+    encoder.bufs.push(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos))
     encoder.cbuf = new Uint8Array(math.max(bufferLen, len) * 2)
     encoder.cpos = 0
   }
@@ -763,6 +762,11 @@ export class UintOptRleEncoder {
     }
   }
 
+  /**
+   * Flush the encoded state and transform this to a Uint8Array.
+   *
+   * Note that this should only be called once.
+   */
   toUint8Array () {
     flushUintOptRleEncoder(this)
     return toUint8Array(this.encoder)
@@ -800,6 +804,11 @@ export class IncUintOptRleEncoder {
     }
   }
 
+  /**
+   * Flush the encoded state and transform this to a Uint8Array.
+   *
+   * Note that this should only be called once.
+   */
   toUint8Array () {
     flushUintOptRleEncoder(this)
     return toUint8Array(this.encoder)
@@ -867,6 +876,11 @@ export class IntDiffOptRleEncoder {
     }
   }
 
+  /**
+   * Flush the encoded state and transform this to a Uint8Array.
+   *
+   * Note that this should only be called once.
+   */
   toUint8Array () {
     flushIntDiffOptRleEncoder(this)
     return toUint8Array(this.encoder)

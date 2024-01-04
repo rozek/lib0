@@ -3,7 +3,7 @@
  */
 
 import * as webcrypto from 'lib0/webcrypto'
-export { exportKey } from './common.js'
+export { exportKeyJwk } from './common.js'
 
 /**
  * @typedef {Array<'encrypt'|'decrypt'>} Usages
@@ -72,7 +72,7 @@ export const generateKeyPair = ({ extractable = false, usages = defaultUsages } 
  * @param {boolean} [opts.extractable]
  * @param {Usages} [opts.usages]
  */
-export const importKey = (jwk, { extractable = false, usages } = {}) => {
+export const importKeyJwk = (jwk, { extractable = false, usages } = {}) => {
   if (usages == null) {
     /* c8 ignore next */
     usages = jwk.key_ops || defaultUsages

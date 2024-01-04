@@ -1,6 +1,6 @@
 {
   "name": "lib0",
-  "version": "0.2.78",
+  "version": "0.2.88",
   "description": "",
   "sideEffects": false,
   "type": "module",
@@ -79,6 +79,12 @@
       "import": "./condititons.js",
       "require": "./dist/conditions.cjs"
     },
+    "./crypto/jwt": {
+      "types": "./crypto/jwt.d.ts",
+      "module": "./crypto/jwt.js",
+      "import": "./crypto/jwt.js",
+      "require": "./dist/jwt.cjs"
+    },
     "./crypto/aes-gcm": {
       "types": "./crypto/aes-gcm.d.ts",
       "module": "./crypto/aes-gcm.js",
@@ -102,6 +108,23 @@
       "module": "./hash/rabin.js",
       "import": "./hash/rabin.js",
       "require": "./dist/rabin.cjs"
+    },
+    "./hash/sha256": {
+      "types": "./hash/sha256.d.ts",
+      "browser": {
+        "module": "./hash/sha256.js",
+        "require": "./dist/sha256.cjs",
+        "default": "./hash/sha256.js"
+      },
+      "node": {
+        "require": "./dist/sha256.node.cjs",
+        "default": "./hash/sha256.node.js"
+      },
+      "default": {
+        "module": "./hash/sha256.js",
+        "require": "./dist/sha256.cjs",
+        "default": "./hash/sha256.js"
+      }
     },
     "./decoding.js": "./decoding.js",
     "./dist/decoding.cjs": "./dist/decoding.cjs",
@@ -213,6 +236,11 @@
       "types": "./logging.node.d.ts",
       "deno": "./logging.node.js",
       "bun": "./logging.js",
+      "browser": {
+        "module": "./logging.js",
+        "require": "./dist/logging.cjs",
+        "default": "./logging.js"
+      },
       "node": {
         "module": "./logging.node.js",
         "require": "./dist/logging.node.cjs",
@@ -412,6 +440,11 @@
       "types": "./webcrypto.d.ts",
       "deno": "./webcrypto.deno.js",
       "bun": "./webcrypto.js",
+      "browser": {
+        "module": "./webcrypto.js",
+        "require": "./dist/webcrypto.cjs",
+        "default": "./webcrypto.js"
+      },
       "node": {
         "module": "./webcrypto.node.js",
         "require": "./dist/webcrypto.node.cjs",
@@ -429,6 +462,11 @@
       "types": "./performance.d.ts",
       "deno": "./performance.node.js",
       "bun": "./performance.node.js",
+      "browser": {
+        "module": "./performance.js",
+        "require": "./dist/performance.cjs",
+        "default": "./performance.js"
+      },
       "node": {
         "module": "./performance.node.js",
         "require": "./dist/performance.node.cjs",
@@ -450,17 +488,17 @@
     "jsdoc-api": "^8.0.0",
     "jsdoc-plugin-typescript": "^2.2.1",
     "rollup": "^2.42.1",
-    "standard": "^14.3.4",
+    "standard": "^17.1.0",
     "typescript": "^5.0.2"
   },
   "scripts": {
     "clean": "rm -rf dist *.d.ts */*.d.ts *.d.ts.map */*.d.ts.map",
     "types": "tsc --outDir .",
     "dist": "rollup -c",
-    "debug": "npm run gentesthtml && npx 0serve -o test.html",
+    "debug": "npm run gentesthtml && node ./bin/0serve.js -o test.html",
     "test": "c8 --check-coverage --lines 100 --branches 100 --functions 100 --statements 100 node --unhandled-rejections=strict ./test.js --repetition-time 50 --production",
     "test-inspect": "node --inspect-brk --unhandled-rejections=strict ./test.js --repetition-time 50 --production",
-    "test-extensive": "node test.js && npm test -- --repetition-time 30000 --extensive",
+    "test-extensive": "c8 --check-coverage --lines 100 --branches 100 --functions 100 --statements 100 node test.js --repetition-time 30000 --extensive --production",
     "trace-deopt": "clear && rollup -c  && node --trace-deopt dist/test.cjs",
     "trace-opt": "clear && rollup -c  && node --trace-opt dist/test.cjs",
     "lint": "standard && tsc",
